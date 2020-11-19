@@ -1,0 +1,19 @@
+{
+  "name": "mtlg",
+  "version": "0.0.1",
+  "description": "test env for mtlg app",
+  "main": "app.js",
+  "scripts": {
+  "start": "node app.js"
+},
+  "repository": {
+  "type": "git",
+  "url": ""
+},
+  "author": "Marcel Finji Mueller",
+  "license": "ISC",
+  "bugs": {
+  "url": ""
+},
+  "homepage": ""
+}
