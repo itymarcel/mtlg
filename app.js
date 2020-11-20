@@ -33,14 +33,10 @@ const getMaterials = (request, response) => {
         if (err) {
           console.log(err);
         } else {
-          client.query('SELECT * FROM materials', (error, results) => {
-              if (error) {
-                throw error
-              }
-              console.log(results);
-              response.status(200).json(results.rows);
-              pool.end();
-          });
+          client.query('SELECT * FROM materials')
+            .then(result => response.status(200).json(result.rows))
+            .catch(e => console.error(e.stack))
+            .then(() => client.end())
         }
     });
 }
@@ -50,6 +46,6 @@ app.get('/', getMaterials);
 
 
 
-app.listen(isProduction ? process.env.PORT : 3000, () => {
+app.listen(isProduction ? process.env.PORT : 4000, () => {
   console.log(`Server listening`);
 });
