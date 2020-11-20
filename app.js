@@ -5,11 +5,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const isProduction = process.env.NODE_ENV === 'production';
 console.log('is production? : ', isProduction);
-console.log('process env db IP: ', process.env.DB_IP);
+console.log('process env db IP: ', process.env.DATABASE_URL);
 let poolConfig = {};
 if (isProduction) {
   poolConfig = {
-    connectionString: process.env.DATABASE_URL;
+    connectionString: process.env.DATABASE_URL,
     ssl: true
   }
 } else {
