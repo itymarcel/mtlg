@@ -34,7 +34,7 @@ const getMaterials = (request, response) => {
           console.log(err);
         } else {
           client.query('SELECT * FROM materials')
-            .then(result => response.status(200).json(result.rows))
+            .then(result => response.json(result.rows))
             .catch(e => console.error(e.stack))
             .then(() => client.end())
         }
