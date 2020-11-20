@@ -4,7 +4,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const isProduction = process.env.NODE_ENV === 'production';
-
+console.log('is production? : ', isProduction);
+console.log('process env db IP: ', process.env.DB_IP);
 let poolConfig = {};
 if (isProduction) {
   poolConfig = {
