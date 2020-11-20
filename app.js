@@ -39,6 +39,7 @@ const getMaterials = (request, response) => {
               }
               console.log(results);
               response.status(200).json(results.rows);
+              pool.end();
           });
         }
     });
