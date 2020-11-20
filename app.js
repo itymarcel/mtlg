@@ -8,13 +8,12 @@ const isProduction = process.env.NODE_ENV === 'production';
 let poolConfig = {};
 if (isProduction) {
   poolConfig = {
-    user: process.env.DB_USER,
     host: process.env.DB_IP,
-    database: process.env.DB,
-    password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-    max: 10, // max number of connection can be open to database
-    idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB,
+    ssl: { rejectUnauthorized: false }
   }
 } else {
   poolConfig = {
