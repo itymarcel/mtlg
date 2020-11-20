@@ -26,13 +26,7 @@ const pool = new Pool(poolConfig);
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
-
-var corsOptions = {
-    origin: ['*'],
-    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] };
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 const getMaterials = (request, response) => {
     pool.connect(function(err, client, done) {
