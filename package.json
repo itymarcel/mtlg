@@ -4,16 +4,19 @@
   "description": "test env for mtlg app",
   "main": "app.js",
   "scripts": {
-  "start": "node app.js"
-},
+    "start": "node app.js"
+  },
   "repository": {
-  "type": "git",
-  "url": ""
-},
+    "type": "git",
+    "url": ""
+  },
   "author": "Marcel Finji Mueller",
   "license": "ISC",
   "bugs": {
-  "url": ""
-},
-  "homepage": ""
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "pg": "^8.5.1"
+  }
 }

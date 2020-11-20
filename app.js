@@ -1,5 +1,7 @@
 const http = require('http');
 const port = process.env.PORT || 3000;
+const pg = require('pg');
+
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
@@ -9,4 +11,14 @@ const server = http.createServer((req, res) => {
 
 server.listen(port,() => {
   console.log(`Server running at port `+port);
+});
+
+
+pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+   console.log(err+"!!!!!!!!!!!!!!!");
+  client.query('SELECT * FROM your_table', function(err, result) {
+    done();
+    if(err) return console.error(err);
+    console.log(result.rows);
+  });
 });
