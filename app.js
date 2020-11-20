@@ -9,11 +9,7 @@ console.log('process env db IP: ', process.env.DB_IP);
 let poolConfig = {};
 if (isProduction) {
   poolConfig = {
-    host: process.env.DB_IP,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB,
+    connectionString: process.env.DATABASE_URL;
     ssl: true
   }
 } else {
