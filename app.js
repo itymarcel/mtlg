@@ -29,16 +29,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 const getMaterials = (request, response) => {
-    pool.connect(function(err, client, done) {
-        if (err) {
-          console.log(err);
-        } else {
-          client.query('SELECT * FROM materials')
-            .then(result => response.json(result.rows))
-            .catch(e => console.error(e.stack))
-            .then(() => client.end())
-        }
-    });
+  pool.query('SELECT * FROM materials')
+    .then(result => response.json(result.rows))
+    .catch(e => console.error(e.stack))
+    .then(() => client.end())
 }
 
 
