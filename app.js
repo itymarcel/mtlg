@@ -9,8 +9,7 @@ console.log('process env db IP: ', process.env.DATABASE_URL);
 let poolConfig = {};
 if (isProduction) {
   poolConfig = {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true
+    connectionString: process.env.DATABASE_URL
   }
 } else {
   poolConfig = {
@@ -31,15 +30,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 const getMaterials = (request, response) => {
+    console.log('inside get materials: ', pool);
     pool.connect(function(err, client, done) {
-        console.log('connected');
-        client.query('SELECT * FROM materials', (error, results) => {
-            if (error) {
-              throw error
-            }
-            console.log(results);
-            response.status(200).json(results.rows);
-        });
+        if (err) {
+          console.log(err);
+        } else {
+          client.query('SELECT * FROM materials', (error, results) => {
+              if (error) {
+                throw error
+              }
+              console.log(results);
+              response.status(200).json(results.rows);
+          });
+        }
     });
 }
 
