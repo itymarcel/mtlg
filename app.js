@@ -4,8 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const isProduction = process.env.NODE_ENV === 'production';
-console.log('is production? : ', isProduction);
-console.log('process env db IP: ', process.env.DATABASE_URL);
+
 let poolConfig = {};
 if (isProduction) {
   poolConfig = {
@@ -30,7 +29,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 const getMaterials = (request, response) => {
-    console.log('inside get materials: ', pool);
     pool.connect(function(err, client, done) {
         if (err) {
           console.log(err);
@@ -52,5 +50,5 @@ app.get('/', getMaterials);
 
 
 app.listen(isProduction ? process.env.PORT : 3000, () => {
-  console.log(`Server listening`, pool);
+  console.log(`Server listening`);
 });
