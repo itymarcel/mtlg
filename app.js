@@ -1,24 +1,45 @@
+const express = require('express');
 const http = require('http');
-const port = process.env.PORT || 3000;
-const pg = require('pg');
+const path = require('path');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const isProduction = process.env.NODE_ENV === 'production'
+console.log('is production: ', isProduction);
 
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
-  res.end('<h1>MTLG server running whooop</h1>');
+const conStr = isProduction ? process.env.DATABASE_URL : "postgres://kseusygevtwtuy:42954951e9b6ac1334290d30c5c5ec4a0df994a4d041008f8c4906b94dd512a9@ec2-54-216-202-161.eu-west-1.compute.amazonaws.com:5432/d85erku0kd3ru9?ssl=true";
+const { Pool } = require('pg');
+const pool = new Pool({
+    connectionString: "postgres://kseusygevtwtuy:42954951e9b6ac1334290d30c5c5ec4a0df994a4d041008f8c4906b94dd512a9@ec2-54-216-202-161.eu-west-1.compute.amazonaws.com:5432/d85erku0kd3ru9?ssl=true"
 });
+console.log(pool);
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
-server.listen(port,() => {
-  console.log(`Server running at port `+port);
-});
+const getMaterials = (request, response) => {
+    console.log('get materials', pool);
+    pool.connect(function(err, client, done) {
+        console.log('connected');
+        client.query('SELECT * FROM materials', (error, results) => {
+            if (error) {
+              throw error
+            }
+            console.log(results);
+            response.status(200).json(results.rows);
+        });
+    });
+}
 
 
-pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-   console.log(err+"!!!!!!!!!!!!!!!");
-  client.query('SELECT * FROM your_table', function(err, result) {
-    done();
-    if(err) return console.error(err);
-    console.log(result.rows);
-  });
+app
+  .route('/materials')
+  // GET endpoint
+  .get(getMaterials)
+
+
+
+app.listen(isProduction ? process.env.PORT : 3000, () => {
+  console.log(`Server listening`)
 });
