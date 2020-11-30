@@ -1,4 +1,5 @@
 const express = require('express');
+const { Pool } = require('pg');
 const http = require('http');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -21,7 +22,6 @@ if (isProduction) {
   }
 }
 
-const { Pool } = require('pg');
 const pool = new Pool(poolConfig);
 const app = express();
 app.use(bodyParser.json());
