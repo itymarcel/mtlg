@@ -1,45 +1,39 @@
 const express = require('express');
-const { Pool } = require('pg');
-const http = require('http');
-const path = require('path');
-const bodyParser = require('body-parser');
+const router = express.Router();
 const cors = require('cors');
-const isProduction = process.env.NODE_ENV === 'production';
 
-let poolConfig = {};
-if (isProduction) {
-  poolConfig = {
-    connectionString: process.env.DATABASE_URL
-  }
-} else {
-  poolConfig = {
-    host: 'ec2-54-216-202-161.eu-west-1.compute.amazonaws.com',
-    port: 5432,
-    user: 'kseusygevtwtuy',
-    password: '42954951e9b6ac1334290d30c5c5ec4a0df994a4d041008f8c4906b94dd512a9',
-    database: 'd85erku0kd3ru9',
-    ssl: { rejectUnauthorized: false }
-  }
-}
-
-const pool = new Pool(poolConfig);
+const config = require('./config');
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(config.bodyParser.urlencoded({extended: true}));
+app.use(config.bodyParser.json());
 app.use(cors());
 
-const getMaterials = (request, response) => {
-  pool.query('SELECT * FROM materials')
-    .then(result => response.json(result.rows))
-    .catch(e => console.error(e.stack))
-    .then(() => client.end())
-}
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
+/* ---------- ROUTES --------- */
+const getMaterials = require('./controller/materials/getmaterials');
+
+app.use('/materials', getMaterials);
 
 
-app.get('/', getMaterials);
-
-
-
-app.listen(isProduction ? process.env.PORT : 4000, () => {
+app.listen(config.isProduction ? process.env.PORT : 4000, () => {
   console.log(`Server listening`);
 });
